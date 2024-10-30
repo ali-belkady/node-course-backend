@@ -1,4 +1,34 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+const mongoDbServer = process.env.MONGO_DB_SERVER;
+const mongoDbUser = process.env.MONGO_DB_USER;
+const mongoDbPass = process.env.MONGO_DB_PASS;
+
+const mongoDbUri = `mongodb+srv://${mongoDbUser}:${mongoDbPass}@${mongoDbServer}/?retryWrites=true&w=majority&appName=node-course`;
+const mongoDbClientOptions = {
+  serverApi: {
+    version: '1',
+    strict: true,
+    deprecationErrors: true,
+  },
+};
+// console.log('connection :', mongoDbUri);
+async function run() {
+  try {
+    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+    await mongoose.connect(mongoDbUri, mongoDbClientOptions);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Connected successfully to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await mongoose.disconnect();
+  }
+}
+
+run().catch(console.dir);
+
+
 
 const app = express();
 
