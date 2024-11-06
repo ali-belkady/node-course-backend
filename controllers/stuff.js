@@ -121,10 +121,6 @@ exports.deleteThing = (req, res, next) => {
               res.status(500).json({ error });
               console.log(`Thing with id ${requestedId} removal failed!`, error);
             });
-        })
-        .catch((error) => {
-          res.status(500).json({ error });
-          console.log(`Thing with id ${requestedId} removal failed!`, error);
         });
       }
     })
